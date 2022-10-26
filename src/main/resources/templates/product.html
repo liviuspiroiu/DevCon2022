@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>From a Monolithic Application through Microservices and into Cloud Native</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/core/css/main.css}"/>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Home</a>
+    <a class="navbar-brand" href="/products/">Products</a>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+
+        <div class="container my-5">
+            <h2 class="mb-5">New User</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="#" th:action="@{/products}" th:object="${product}" method="post">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="name" class="col-form-label">Name</label>
+                                <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+                                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                      class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="description" class="col-form-label">Description</label>
+                                <input type="text" th:field="*{description}" class="form-control" id="description"
+                                       placeholder="Description">
+                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                      class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="price" class="col-form-label">Price</label>
+                                <input type="number" th:field="*{price}" class="form-control" id="price"
+                                       placeholder="Price">
+                                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="categoryId" class="col-form-label">Category</label>
+                                <select class="form-control" id="categoryId" th:field="*{categoryId}">
+                                    <option value="0">select option</option>
+                                    <option th:each="category : ${categories}" th:value="${category.getId()}" th:text="${category.getName()}"></option>
+                                </select>
+
+
+                                <span th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"
+                                      class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-5">
+                                <input type="submit" class="btn btn-primary" value="Add Product">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+<!-- /.container -->
+
+<!-- Boostrap core js -->
+<script type="text/javascript" th:src="@{bootstrap/js/bootstrap.js}"></script>
+</body>
+</html>

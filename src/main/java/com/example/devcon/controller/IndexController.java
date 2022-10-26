@@ -9,26 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HelloController {
+public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String welcome(ModelMap model) {
-
-        model.addAttribute("message", "Spring MVC Hello World");
-
-        // view name, map to welcome.html later
-        return "welcome";
-
+    public String index(ModelMap model) {
+        model.addAttribute("message", "DevCon 2022");
+        return "index";
     }
 
     @GetMapping("/hello/{name:.+}")
     public String hello(Model model, @PathVariable("name") String name) {
-
         model.addAttribute("message", name);
-
-        // view name, map to welcome.html later
-        return "welcome";
+        return "index";
     }
-
-
 }

@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @SpringBootTest(classes = DevconApplication.class)
-public class HelloControllerTest {
+public class IndexControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
