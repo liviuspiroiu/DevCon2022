@@ -6,11 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.devcon.common.Web.API;
-
-
 @RestController
-@RequestMapping(API + "/customers")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerService customerService;

@@ -18,6 +18,5 @@ public class ProductDto {
     private BigDecimal price;
     private String status;
     private Integer salesCounter;
-    private Set<ReviewDto> reviews;
     private Long categoryId;
 }

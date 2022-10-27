@@ -2,7 +2,6 @@ package com.example.devcon.service;
 
 import com.example.devcon.dto.ProductDto;
 import com.example.devcon.model.Product;
-import com.example.devcon.model.Review;
 import com.example.devcon.repository.CategoryRepository;
 import com.example.devcon.repository.ProductRepository;
 import org.slf4j.Logger;
@@ -38,7 +37,6 @@ public class ProductService {
                     product.getPrice(),
                     product.getStatus().name(),
                     product.getSalesCounter(),
-                    product.getReviews().stream().map(ReviewService::mapToDto).collect(Collectors.toSet()),
                     product.getCategory().getId()
             );
         }
@@ -69,18 +67,8 @@ public class ProductService {
                         productDto.getPrice(),
                         AVAILABLE,
                         0,
-                        Collections.emptySet(),
                         categoryRepository.findById(productDto.getCategoryId()).orElse(null)
                 )));
-    }
-
-    public ProductDto addReview(Long productId, Review review) {
-        Product product = this.productRepository
-                .findById(productId)
-                .orElseThrow(() -> new IllegalStateException("The Product does not exist!"));
-        product.getReviews().add(review);
-        this.productRepository.saveAndFlush(product);
-        return mapToDto(product);
     }
 
     public void delete(Long id) {

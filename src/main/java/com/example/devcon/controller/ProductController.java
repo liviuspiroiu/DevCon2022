@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public String addUser(@Valid ProductDto product, BindingResult result, Model model) {
+    public String addProduct(@Valid ProductDto product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "product";
         }

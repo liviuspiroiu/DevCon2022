@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.devcon.common.Web.API;
 
 
 @RestController
-@RequestMapping(API + "/carts")
+@RequestMapping("/carts")
 public class CartController {
 
     private final CartService cartService;

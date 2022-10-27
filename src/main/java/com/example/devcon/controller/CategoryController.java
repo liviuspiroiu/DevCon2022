@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.devcon.common.Web.API;
 
 
 @RestController
-@RequestMapping(API + "/categories")
+@RequestMapping( "/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;

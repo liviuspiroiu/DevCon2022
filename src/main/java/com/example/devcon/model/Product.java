@@ -43,32 +43,26 @@ public class Product extends AbstractEntity {
     @Column(name = "sales_counter")
     private Integer salesCounter;
 
-    @OneToMany
-    @JsonIgnore
-    private Set<Review> reviews = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
     public Product(@NotNull String name, @NotNull String description, @NotNull BigDecimal price,
-                   Integer salesCounter, Set<Review> reviews, Category category) {
+                   Integer salesCounter,  Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.salesCounter = salesCounter;
-        this.reviews = reviews;
         this.category = category;
     }
 
     public Product(@NotNull String name, @NotNull String description, @NotNull BigDecimal price,
-                   ProductStatus status, Integer salesCounter, Set<Review> reviews, Category category) {
+                   ProductStatus status, Integer salesCounter,  Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.status = status;
         this.salesCounter = salesCounter;
-        this.reviews = reviews;
         this.category = category;
     }
 
@@ -82,13 +76,12 @@ public class Product extends AbstractEntity {
                 Objects.equals(price, product.price) &&
                 status == product.status &&
                 Objects.equals(salesCounter, product.salesCounter) &&
-                Objects.equals(reviews, product.reviews) &&
                 Objects.equals(category, product.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, price, status, salesCounter, reviews, category);
+        return Objects.hash(name, description, price, status, salesCounter, category);
     }
 
     @Override
@@ -99,7 +92,6 @@ public class Product extends AbstractEntity {
                 ", price=" + price +
                 ", status=" + status +
                 ", salesCounter=" + salesCounter +
-                ", reviews=" + reviews +
                 ", category=" + category +
                 '}';
     }
