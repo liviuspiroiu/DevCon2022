@@ -1,1 +1,2 @@
-INSERT INTO categories VALUES ('1', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'Phones', 'Phones')
+INSERT INTO categories
+VALUES (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'Phones', 'Phones');

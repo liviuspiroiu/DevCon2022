@@ -7,7 +7,7 @@ import com.example.devcon.service.OrderItemService;
 import com.example.devcon.service.OrderService;
 import com.example.devcon.service.PaymentProcessingApi;
 import com.example.devcon.service.PaymentService;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,51 +38,45 @@ public class OrderController {
     }
 
     @GetMapping(value = "/")
-    public String list(Authentication authentication, ModelMap model) {
-        final User user = (User) authentication.getPrincipal();
+    public String list(@AuthenticationPrincipal User user, ModelMap model) {
         final List<Order> orders = orderService.findAllByUser(user);
         model.addAttribute("orders", orders);
         return "/orders/list";
     }
 
     @GetMapping(value = "/cart")
-    public String cart(Authentication authentication, ModelMap model) {
-        final User user = (User) authentication.getPrincipal();
+    public String cart(@AuthenticationPrincipal User user, ModelMap model) {
         final OrderDto order = orderService.findCurrentOrder(user);
         model.addAttribute("order", order);
         return "/orders/cart";
     }
 
     @GetMapping(value = "/checkout/{id}")
-    public String checkout(Authentication authentication, @PathVariable long id) {
-        final User user = (User) authentication.getPrincipal();
+    public String checkout(@AuthenticationPrincipal User user, @PathVariable long id) {
         final PaymentProcessingApi.PaymentProcessingApiResult result = paymentProcessingApi.mockPay();
         paymentService.create(user, id, result.getReference(), result.getStatus());
         return "redirect:/orders/";
     }
 
     @GetMapping(value = "/increaseQuantity/{orderId}/{orderItemId}")
-    public String increaseQuantity(Authentication authentication,
+    public String increaseQuantity(@AuthenticationPrincipal User user,
                                    @PathVariable long orderId,
                                    @PathVariable long orderItemId) {
-        final User user = (User) authentication.getPrincipal();
         orderService.modifyQuantity(user, orderId, orderItemId, 1L);
         return "redirect:/orders/cart";
     }
 
     @GetMapping(value = "/decreaseQuantity/{orderId}/{orderItemId}")
-    public String decreaseQuantity(Authentication authentication,
+    public String decreaseQuantity(@AuthenticationPrincipal User user,
                                    @PathVariable long orderId,
                                    @PathVariable long orderItemId) {
-        final User user = (User) authentication.getPrincipal();
         orderService.modifyQuantity(user, orderId, orderItemId, -1L);
         return "redirect:/orders/cart";
     }
 
     @GetMapping(value = "/deleteItem/{id}")
-    public String deleteItem(Authentication authentication,
+    public String deleteItem(@AuthenticationPrincipal User user,
                              @PathVariable long id) {
-        final User user = (User) authentication.getPrincipal();
         orderItemService.delete(user, id);
         return "redirect:/orders/cart";
     }

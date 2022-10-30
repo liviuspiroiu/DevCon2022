@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result, Model model) {
+    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             user.setId(id);
             return "/users/update";
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteUser(@PathVariable("id") long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         userRepository.delete(user);
 

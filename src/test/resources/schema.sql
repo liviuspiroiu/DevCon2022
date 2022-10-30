@@ -1,4 +1,4 @@
-create table categories
+create table if not exists  categories
 (
     id                 bigint       not null
         primary key,
@@ -8,12 +8,12 @@ create table categories
     name               varchar(255) not null
 );
 
-create table hibernate_sequence
+create table if not exists  hibernate_sequence
 (
     next_val bigint null
 );
 
-create table products
+create table if not exists  products
 (
     id                 bigint         not null
         primary key,
@@ -29,7 +29,7 @@ create table products
         foreign key (category_id) references categories (id)
 );
 
-create table sys_users
+create table if not exists  sys_users
 (
     user_id    bigint auto_increment
         primary key,
@@ -47,7 +47,7 @@ create table sys_users
     username   varchar(255) null
 );
 
-create table orders
+create table if not exists  orders
 (
     id                 bigint         not null
         primary key,
@@ -69,7 +69,7 @@ create table orders
         foreign key (user_user_id) references sys_users (user_id)
 );
 
-create table order_items
+create table if not exists  order_items
 (
     id                 bigint   not null
         primary key,
@@ -84,7 +84,7 @@ create table order_items
         foreign key (product_id) references products (id)
 );
 
-create table payments
+create table if not exists  payments
 (
     id                 bigint       not null
         primary key,
@@ -98,6 +98,8 @@ create table payments
     constraint FK81gagumt0r8y3rmudcgpbk42l
         foreign key (order_id) references orders (id)
 );
+
+ALTER TABLE orders DROP CONSTRAINT IF EXISTS FK8aol9f99s97mtyhij0tvfj41f;
 
 alter table orders
     add constraint FK8aol9f99s97mtyhij0tvfj41f

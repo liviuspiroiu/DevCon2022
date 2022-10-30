@@ -36,7 +36,7 @@ public class IndexController {
     }
 
     @GetMapping
-    public String findAll(ModelMap model) {
+    public String list(ModelMap model) {
         final List<ProductDto> all = this.productService.findAll();
         model.addAttribute("products", all);
         model.addAttribute("product", new ProductDto());
