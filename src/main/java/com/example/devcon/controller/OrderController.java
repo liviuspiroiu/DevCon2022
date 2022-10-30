@@ -25,12 +25,12 @@ public class OrderController {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping(value = "/")
-    public String findAll(Authentication authentication, ModelMap model) {
+    @GetMapping(value = "/cart")
+    public String cart(Authentication authentication, ModelMap model) {
         final User user = (User) authentication.getPrincipal();
         final OrderDto order = orderService.findCurrentOrder(user);
         model.addAttribute("order", order);
-        return "/orders/list";
+        return "/orders/cart";
     }
 
     @GetMapping(value = "/increaseQuantity/{orderId}/{orderItemId}")
@@ -39,7 +39,7 @@ public class OrderController {
                                    @PathVariable long orderItemId) {
         final User user = (User) authentication.getPrincipal();
         orderService.modifyQuantity(user, orderId, orderItemId, 1L);
-        return "redirect:/orders/";
+        return "redirect:/orders/cart";
     }
 
     @GetMapping(value = "/decreaseQuantity/{orderId}/{orderItemId}")
@@ -48,14 +48,14 @@ public class OrderController {
                                    @PathVariable long orderItemId) {
         final User user = (User) authentication.getPrincipal();
         orderService.modifyQuantity(user, orderId, orderItemId, -1L);
-        return "redirect:/orders/";
+        return "redirect:/orders/cart";
     }
 
     @GetMapping(value = "/deleteItem/{id}")
     public String deleteItem(Authentication authentication,
-                                   @PathVariable long id) {
+                             @PathVariable long id) {
         final User user = (User) authentication.getPrincipal();
         orderItemService.delete(user, id);
-        return "redirect:/orders/";
+        return "redirect:/orders/cart";
     }
 }

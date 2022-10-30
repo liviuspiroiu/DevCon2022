@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -82,17 +83,21 @@ public class OrderService {
     }
 
     public OrderDto findCurrentOrder(User user) {
-        return mapToDto(orderRepository
-                .findAllByStatusAndUserId(OrderStatus.NEW, user.getId())
+        Optional<Order> order = orderRepository
+                .findAllByStatusAndUser_Id(OrderStatus.NEW, user.getId())
                 .stream()
-                .min(Comparator.comparing(AbstractEntity::getCreatedDate)).orElse(
-                        create(user)
-                ));
+                .min(Comparator.comparing(AbstractEntity::getCreatedDate));
+
+        if (order.isPresent()) {
+            return mapToDto(order.get());
+        }
+
+        return mapToDto(create(user));
     }
 
     public void addProductToOrder(User user, long productId) {
         final Order order = orderRepository
-                .findAllByStatusAndUserId(OrderStatus.NEW, user.getId())
+                .findAllByStatusAndUser_Id(OrderStatus.NEW, user.getId())
                 .stream()
                 .min(Comparator.comparing(AbstractEntity::getCreatedDate))
                 .orElse(create(user));
