@@ -16,7 +16,8 @@ function pay() {
         document.getElementById("payment-accepted").style.display = "block";
     }, 3000);
     window.setTimeout(() => {
-
+        document.getElementById("payment-accepted").style.display = "none";
+        document.getElementById("payment-orders").style.display = "block";
     }, 3000);
 
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="general.html :: headerfiles"></th:block>
+    <title>From a Monolithic Application through Microservices and into Cloud Native</title>
+</head>
+<body>
+<th:block th:include="general.html :: header"></th:block>
+
+<div class="container my-1">
+    <div class="row">
+        <div class="card mx-auto" style="min-width: 1000px">
+            <div class="card-title text-center" style="padding: 5px">
+                <h2>
+                    <span>Orders</span>
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12">
+                    <div th:if="${ not#lists.isEmpty(orders)}">
+                        <table style="min-width: 900px">
+                            <tr style="border-bottom: 1pt solid black;" class="text-center">
+                                <th>Id</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr th:each="order : ${orders}" style="border-bottom: 1pt solid black;" class="text-center">
+                                <td th:text="${order.id}"></td>
+                                <td>
+                                    <ul class="no-bullets">
+                                        <li th:each="item : ${order.orderItems}">
+                                            <i th:text="${item.product.name}"></i>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td th:text="${'&#36;' + order.totalPrice}"></td>
+                                <td th:text="${order.status}" class="text-center"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="text-center" th:if="${#lists.isEmpty(orders)}">
+                        <h3>You haven't made any orders.</h3>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+</body>
+</html>

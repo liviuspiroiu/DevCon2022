@@ -72,7 +72,7 @@
 
     <div class="row" style="min-height: 10px"></div>
 
-    <div class="row">
+    <div th:if="${ not#lists.isEmpty(order.getOrderItems())}" class="row">
         <div class="col-md-4 payment-card">
             <div class="card-title text-center" style="padding: 5px">
                 <h2>
@@ -151,30 +151,44 @@
         </div>
     </div>
 
-    <div id="payment-checkout" class="row text-center">
-        <a class="col-12" href="#">
-            <button class="openbtn" onclick="pay()">
-                <span>Check-out</span>
-            </button>
-        </a>
-    </div>
-    <div id="payment-paying" class="row text-center" style="display: none">
-        <a class="col-12" href="#">
-            <button class="openbtn">
+    <div th:if="${ not#lists.isEmpty(order.getOrderItems())}">
+        <div id="payment-checkout" class="row text-center">
+            <a class="col-12" href="#">
+                <button class="openbtn" onclick="pay()">
+                    <span>Check-out</span>
+                </button>
+            </a>
+        </div>
+        <div id="payment-paying" class="row text-center" style="display: none">
+            <a class="col-12" href="#">
+                <button class="openbtn">
                 <span class="spinner-border spinner-border-sm" role="status"
                       aria-hidden="true"></span>
-                <span>Paying...</span>
-            </button>
-        </a>
-    </div>
-    <div id="payment-accepted" class="row text-center" style="display: none">
-        <a class="col-12" href="#">
-            <button class="openbtn">
+                    <span>Paying...</span>
+                </button>
+            </a>
+        </div>
+        <div id="payment-accepted" class="row text-center" style="display: none">
+            <a class="col-12" href="#">
+                <button class="openbtn">
                 <span class="fa fa-check-double" role="status"
                       aria-hidden="true"></span>
-                <span>Payment accepted</span>
-            </button>
-        </a>
+                    <span>Payment accepted</span>
+                </button>
+            </a>
+        </div>
+        <div id="payment-orders" class="row text-center" style="display: none">
+            <a class="col-12" href="#">
+                <a href="#"
+                   th:href="@{'/orders/checkout/' + ${order.id}}">
+                    <button class="openbtn">
+                <span class="fa fa-check-double" role="status"
+                      aria-hidden="true"></span>
+                        <span>Payment accepted</span>
+                    </button>
+                </a>
+            </a>
+        </div>
     </div>
 </div>
 <!-- /.container -->

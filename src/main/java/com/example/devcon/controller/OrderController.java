@@ -1,9 +1,12 @@
 package com.example.devcon.controller;
 
 import com.example.devcon.dto.OrderDto;
+import com.example.devcon.model.Order;
 import com.example.devcon.model.User;
 import com.example.devcon.service.OrderItemService;
 import com.example.devcon.service.OrderService;
+import com.example.devcon.service.PaymentProcessingApi;
+import com.example.devcon.service.PaymentService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,18 +14,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
+    private final PaymentService paymentService;
     private final OrderItemService orderItemService;
 
-    public OrderController(OrderService orderService,
-                           OrderItemService orderItemService) {
+    private final PaymentProcessingApi paymentProcessingApi;
+
+    public OrderController(final OrderService orderService,
+                           final PaymentService paymentService,
+                           final OrderItemService orderItemService,
+                           final PaymentProcessingApi paymentProcessingApi) {
         this.orderService = orderService;
+        this.paymentService = paymentService;
         this.orderItemService = orderItemService;
+        this.paymentProcessingApi = paymentProcessingApi;
+    }
+
+    @GetMapping(value = "/")
+    public String list(Authentication authentication, ModelMap model) {
+        final User user = (User) authentication.getPrincipal();
+        final List<Order> orders = orderService.findAllByUser(user);
+        model.addAttribute("orders", orders);
+        return "/orders/list";
     }
 
     @GetMapping(value = "/cart")
@@ -31,6 +51,14 @@ public class OrderController {
         final OrderDto order = orderService.findCurrentOrder(user);
         model.addAttribute("order", order);
         return "/orders/cart";
+    }
+
+    @GetMapping(value = "/checkout/{id}")
+    public String checkout(Authentication authentication, @PathVariable long id) {
+        final User user = (User) authentication.getPrincipal();
+        final PaymentProcessingApi.PaymentProcessingApiResult result = paymentProcessingApi.mockPay();
+        paymentService.create(user, id, result.getReference(), result.getStatus());
+        return "redirect:/orders/";
     }
 
     @GetMapping(value = "/increaseQuantity/{orderId}/{orderItemId}")
