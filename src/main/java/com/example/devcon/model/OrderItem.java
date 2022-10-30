@@ -11,9 +11,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-/**
- * A OrderItem.
- */
 @Getter
 @Setter
 @NoArgsConstructor

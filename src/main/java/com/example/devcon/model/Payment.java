@@ -9,9 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-/**
- * A Payment.
- */
 @Getter
 @Setter
 @NoArgsConstructor

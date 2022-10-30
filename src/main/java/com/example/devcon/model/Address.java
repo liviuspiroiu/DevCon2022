@@ -12,9 +12,6 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * An Address.
- */
 @Getter
 @Setter
 @NoArgsConstructor

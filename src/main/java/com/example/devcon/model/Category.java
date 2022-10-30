@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * A Category.
- */
 @Getter
 @Setter
 @NoArgsConstructor
