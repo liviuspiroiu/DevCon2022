@@ -151,10 +151,10 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Order> findAllByUser(User user) {
+    public List<OrderDto> findAllByUser(User user) {
         return orderRepository
                 .findAllByUserId(user.getId()).stream()
                 .filter(order -> order.getStatus() != OrderStatus.NEW)
-                .collect(Collectors.toList());
+                .map(OrderService::mapToDto).collect(Collectors.toList());
     }
 }

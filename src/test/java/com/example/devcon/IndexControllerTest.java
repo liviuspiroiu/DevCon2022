@@ -13,6 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @SpringBootTest(classes = DevconApplication.class)
 @Sql({"/data/categories.sql", "/data/products.sql"})
+@Transactional
 public class IndexControllerTest {
 
     @Autowired
@@ -72,5 +74,7 @@ public class IndexControllerTest {
         ), modelAndView.getModel().get("categories"));
 
     }
+
+
 
 }

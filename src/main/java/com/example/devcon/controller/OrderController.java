@@ -1,7 +1,6 @@
 package com.example.devcon.controller;
 
 import com.example.devcon.dto.OrderDto;
-import com.example.devcon.model.Order;
 import com.example.devcon.model.User;
 import com.example.devcon.service.OrderItemService;
 import com.example.devcon.service.OrderService;
@@ -39,7 +38,7 @@ public class OrderController {
 
     @GetMapping(value = "/")
     public String list(@AuthenticationPrincipal User user, ModelMap model) {
-        final List<Order> orders = orderService.findAllByUser(user);
+        final List<OrderDto> orders = orderService.findAllByUser(user);
         model.addAttribute("orders", orders);
         return "/orders/list";
     }
@@ -51,10 +50,10 @@ public class OrderController {
         return "/orders/cart";
     }
 
-    @GetMapping(value = "/checkout/{id}")
-    public String checkout(@AuthenticationPrincipal User user, @PathVariable long id) {
+    @GetMapping(value = "/checkout/{orderId}")
+    public String checkout(@AuthenticationPrincipal User user, @PathVariable long orderId) {
         final PaymentProcessingApi.PaymentProcessingApiResult result = paymentProcessingApi.mockPay();
-        paymentService.create(user, id, result.getReference(), result.getStatus());
+        paymentService.create(user, orderId, result.getReference(), result.getStatus());
         return "redirect:/orders/";
     }
 
