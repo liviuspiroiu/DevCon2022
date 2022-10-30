@@ -52,13 +52,14 @@ public class Order extends AbstractEntity {
 
     public Order(@NotNull BigDecimal totalPrice, @NotNull OrderStatus status,
                  ZonedDateTime shipped, Payment payment, Address shipmentAddress,
-                 Set<OrderItem> orderItems) {
+                 Set<OrderItem> orderItems, User user) {
         this.totalPrice = totalPrice;
         this.status = status;
         this.shipped = shipped;
         this.payment = payment;
         this.shipmentAddress = shipmentAddress;
         this.orderItems = orderItems;
+        this.user = user;
     }
 
     @Override

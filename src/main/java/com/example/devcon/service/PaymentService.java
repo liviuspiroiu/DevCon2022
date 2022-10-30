@@ -1,18 +1,15 @@
 package com.example.devcon.service;
 
+import com.example.devcon.dto.PaymentDto;
 import com.example.devcon.model.Order;
 import com.example.devcon.model.Payment;
 import com.example.devcon.model.enumeration.PaymentStatus;
 import com.example.devcon.repository.OrderRepository;
 import com.example.devcon.repository.PaymentRepository;
-import com.example.devcon.dto.PaymentDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,23 +36,6 @@ public class PaymentService {
         return null;
     }
 
-    public List<PaymentDto> findAll() {
-        log.debug("Request to get all Payments");
-        return this.paymentRepository.findAll()
-                .stream()
-                .map(PaymentService::mapToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public PaymentDto findById(Long id) {
-        log.debug("Request to get Payment : {}", id);
-        return this.paymentRepository
-                .findById(id)
-                .map(PaymentService::mapToDto)
-                .orElse(null);
-    }
-
     public PaymentDto create(PaymentDto paymentDto) {
         log.debug("Request to create Payment : {}", paymentDto);
 
@@ -71,10 +51,5 @@ public class PaymentService {
                         order
                 )
         ));
-    }
-
-    public void delete(Long id) {
-        log.debug("Request to delete Payment : {}", id);
-        this.paymentRepository.deleteById(id);
     }
 }

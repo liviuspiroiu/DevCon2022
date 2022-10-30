@@ -59,4 +59,8 @@ public class OrderItem extends AbstractEntity {
                 ", product=" + product.getName() +
                 '}';
     }
+
+    public void updateQuantity(long value) {
+        this.quantity += value;
+    }
 }

@@ -5,11 +5,13 @@ import com.example.devcon.model.User;
 import com.example.devcon.service.CategoryService;
 import com.example.devcon.service.OrderService;
 import com.example.devcon.service.ProductService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -43,6 +45,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public String addProduct(@Valid ProductDto product, BindingResult result) {
         if (result.hasErrors()) {
             return "/products/list";
@@ -51,10 +54,11 @@ public class ProductController {
         return "redirect:/products/";
     }
 
-    @PostMapping("/addProductToOrder")
-    public String addProductToOrder(Authentication auth, @Valid ProductDto product) {
+    @GetMapping("/addProductToOrder/{id}")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public String addProductToOrder(Authentication auth, @PathVariable long id) {
         final User user = (User) auth.getPrincipal();
-        this.orderService.addProductToOrder(user, product);
+        this.orderService.addProductToOrder(user, id);
         return "redirect:/products/";
     }
 }

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="general.html :: headerfiles"></th:block>
+    <title>From a Monolithic Application through Microservices and into Cloud Native</title>
+</head>
+<body>
+<th:block th:include="general.html :: header"></th:block>
+
+<div class="container my-1">
+    <div class="row">
+        <div class="card mx-auto">
+            <div class="card-title text-center" style="padding: 5px">
+                <h2>
+                    <span>Shopping cart</span>
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="col-12">
+                    <div th:if="${ not#lists.isEmpty(order.getOrderItems())}">
+                        <table>
+                            <tr style="border-bottom: 1pt solid black;">
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tr th:each="item : ${order.getOrderItems()}" style="border-bottom: 1pt solid black;">
+                                <td th:text="${item.product.name}"></td>
+                                <td th:text="${item.product.description}"></td>
+                                <td th:text="${'&#36;' + item.product.price}"></td>
+                                <td th:text="${item.quantity}" class="text-center"></td>
+                                <td
+                                        th:text="${'&#36;' + (item.quantity * item.product.price)}"></td>
+                                <td>
+                                    <a href="#"
+                                       th:href="@{'/orders/increaseQuantity/' + ${order.id} +'/' + ${item.id}}">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                    <a href="#"
+                                       th:href="@{'/orders/decreaseQuantity/' + ${order.id} + '/' + ${item.id}}">
+                                        <span class="fa fa-minus"></span>
+                                    </a>
+                                    <a href="#"
+                                       th:href="@{'/orders/deleteItem/' + ${item.id}}">
+                                        <span class="fa fa-trash-alt"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="padding: 5px; font-weight: bold">Total</td>
+                                <td style="padding: 5px; font-weight: bold" th:text="${order.getTotalPrice()}"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="text-center" th:if="${#lists.isEmpty(order.getOrderItems())}">
+                        <h3>Your shopping cart is empty.</h3>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="min-height: 10px"></div>
+
+    <div class="row">
+        <div class="col-5 card mx-auto">
+            <div class="card-title text-center" style="padding: 5px">
+                <h2>
+                    <span>Billing address</span>
+                </h2>
+            </div>
+            <div class="card-text">
+                <table class="mx-auto">
+                    <tr>
+                        <td>Address 1</td>
+                        <td th:text="${order.shipmentAddress.address1}"></td>
+                    </tr>
+                    <tr>
+                        <td>Address 2</td>
+                        <td th:text="${order.shipmentAddress.address2}"></td>
+                    </tr>
+                    <tr>
+                        <td>Postcode</td>
+                        <td th:text="${order.shipmentAddress.postcode}"></td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td th:text="${order.shipmentAddress.city} + ', ' + ${order.shipmentAddress.country}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-2 mx-auto">
+        </div>
+        <div class="col-5 card mx-auto">
+            <div class="card-title text-center" style="padding: 5px">
+                <h2>
+                    <span>Shipping address</span>
+                </h2>
+            </div>
+            <div class="card-text">
+                <table class="mx-auto">
+                    <tr>
+                        <td>Address 1</td>
+                        <td th:text="${order.shipmentAddress.address1}"></td>
+                    </tr>
+                    <tr>
+                        <td>Address 2</td>
+                        <td th:text="${order.shipmentAddress.address2}"></td>
+                    </tr>
+                    <tr>
+                        <td>Postcode</td>
+                        <td th:text="${order.shipmentAddress.postcode}"></td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td th:text="${order.shipmentAddress.city} + ', ' + ${order.shipmentAddress.country}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="min-height: 30px"></div>
+
+    <div class="row text-center">
+        <a class="col-12" href="#" th:href="@{/products/addProductToOrder}">
+            <button class="openbtn">Check-out</button>
+        </a>
+    </div>
+</div>
+<!-- /.container -->
+</body>
+</html>

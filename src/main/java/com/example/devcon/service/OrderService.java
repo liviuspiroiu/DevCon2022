@@ -2,7 +2,6 @@ package com.example.devcon.service;
 
 import com.example.devcon.dto.OrderDto;
 import com.example.devcon.dto.OrderItemDto;
-import com.example.devcon.dto.ProductDto;
 import com.example.devcon.model.*;
 import com.example.devcon.model.enumeration.OrderStatus;
 import com.example.devcon.repository.OrderItemRepository;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,7 @@ public class OrderService {
                     order.getTotalPrice(),
                     order.getStatus().name(),
                     order.getShipped(),
-                    order.getPayment().getId(),
+                    order.getPayment() != null ? order.getPayment().getId() : null,
                     AddressService.mapToDto(order.getShipmentAddress()),
                     orderItems
             );
@@ -60,28 +58,7 @@ public class OrderService {
         return null;
     }
 
-    public List<OrderDto> findAll() {
-        log.debug("Request to get all Orders");
-        return this.orderRepository.findAll()
-                .stream()
-                .map(OrderService::mapToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public OrderDto findById(Long id) {
-        log.debug("Request to get Order : {}", id);
-        return this.orderRepository.findById(id).map(OrderService::mapToDto).orElse(null);
-    }
-
-    public List<OrderDto> findAllByUser(Long id) {
-        return this.orderRepository.findAllByUserId(id)
-                .stream()
-                .map(OrderService::mapToDto)
-                .collect(Collectors.toList());
-    }
-
-    public OrderDto create(OrderDto orderDto) {
+    public OrderDto create(OrderDto orderDto, User user) {
         log.debug("Request to create Order : {}", orderDto);
         return mapToDto(
                 this.orderRepository.save(
@@ -91,7 +68,8 @@ public class OrderService {
                                 null,
                                 null,
                                 AddressService.createFromDto(orderDto.getShipmentAddress()),
-                                Collections.emptySet()
+                                Collections.emptySet(),
+                                user
                         )
                 )
         );
@@ -103,38 +81,69 @@ public class OrderService {
         this.orderRepository.deleteById(id);
     }
 
-    public void addProductToOrder(User user, ProductDto productDto) {
+    public OrderDto findCurrentOrder(User user) {
+        return mapToDto(orderRepository
+                .findAllByStatusAndUserId(OrderStatus.NEW, user.getId())
+                .stream()
+                .min(Comparator.comparing(AbstractEntity::getCreatedDate)).orElse(
+                        create(user)
+                ));
+    }
+
+    public void addProductToOrder(User user, long productId) {
         final Order order = orderRepository
                 .findAllByStatusAndUserId(OrderStatus.NEW, user.getId())
                 .stream()
                 .min(Comparator.comparing(AbstractEntity::getCreatedDate))
-                .orElse(create(user.getAddress()));
+                .orElse(create(user));
 
-        final Product product = productRepository.getReferenceById(productDto.getId());
+        final Product product = productRepository.getReferenceById(productId);
 
-        final OrderItem orderItem = new OrderItem(
-                1L,
-                product,
-                order
+        final OrderItem orderItem = order.getOrderItems()
+                .stream()
+                .filter(item -> item.getProduct().getId().equals(product.getId()))
+                .findFirst()
+                .orElse(new OrderItem(0L, product, order));
+
+        orderItem.setQuantity(orderItem.getQuantity() + 1);
+        orderItemRepository.save(orderItem);
+
+        order.setTotalPrice(
+                order.getTotalPrice().add(orderItem.getProduct().getPrice())
         );
 
-        orderItemRepository.save(orderItem);
-        order.getOrderItems().add(orderItem);
-
         orderRepository.save(order);
-
     }
 
-    private Order create(Address address) {
+    private Order create(User user) {
         return this.orderRepository.save(
                 new Order(
                         BigDecimal.ZERO,
                         OrderStatus.NEW,
                         null,
                         null,
-                        address,
-                        Collections.emptySet()
+                        user.getAddress(),
+                        Collections.emptySet(),
+                        user
                 )
         );
+    }
+
+    public void modifyQuantity(User user, long orderId, long orderItemId, long value) {
+        final Order order = orderRepository.findById(orderId).orElseThrow();
+        if (order.getUser().getId() != user.getId()) {
+            throw new IllegalStateException("Operation not allowed!");
+        }
+        final OrderItem orderItem = order.getOrderItems().stream().filter(item -> item.getId() == orderItemId).findFirst().orElseThrow();
+        orderItem.updateQuantity(value);
+        if (orderItem.getQuantity() == 0) {
+            orderItemRepository.deleteById(orderItemId);
+        }
+
+        order.setTotalPrice(
+                order.getTotalPrice().add(orderItem.getProduct().getPrice().multiply(BigDecimal.valueOf(value)))
+        );
+
+        orderRepository.save(order);
     }
 }

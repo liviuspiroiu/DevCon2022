@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,12 +48,6 @@ public class ProductService {
                 .stream()
                 .map(ProductService::mapToDto)
                 .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public ProductDto findById(Long id) {
-        log.debug("Request to get Product : {}", id);
-        return this.productRepository.findById(id).map(ProductService::mapToDto).orElse(null);
     }
 
     public ProductDto create(ProductDto productDto) {

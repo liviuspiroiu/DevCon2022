@@ -1,36 +1,20 @@
 package com.example.devcon.service;
 
-import com.example.devcon.model.Order;
-import com.example.devcon.model.OrderItem;
-import com.example.devcon.model.Product;
-import com.example.devcon.repository.OrderItemRepository;
-import com.example.devcon.repository.OrderRepository;
-import com.example.devcon.repository.ProductRepository;
 import com.example.devcon.dto.OrderItemDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.devcon.model.OrderItem;
+import com.example.devcon.model.User;
+import com.example.devcon.repository.OrderItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class OrderItemService {
 
-    private final Logger log = LoggerFactory.getLogger(OrderItemService.class);
-
     private final OrderItemRepository orderItemRepository;
-    private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
 
-    public OrderItemService(OrderItemRepository orderItemRepository,
-                            OrderRepository orderRepository,
-                            ProductRepository productRepository) {
+    public OrderItemService(OrderItemRepository orderItemRepository) {
         this.orderItemRepository = orderItemRepository;
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
     }
 
     public static OrderItemDto mapToDto(OrderItem orderItem) {
@@ -38,57 +22,19 @@ public class OrderItemService {
             return new OrderItemDto(
                     orderItem.getId(),
                     orderItem.getQuantity(),
-                    orderItem.getProduct().getId(),
+                    ProductService.mapToDto(orderItem.getProduct()),
                     orderItem.getOrder().getId()
             );
         }
         return null;
     }
 
-    public List<OrderItemDto> findAll() {
-        log.debug("Request to get all OrderItems");
-        return this.orderItemRepository.findAll()
-                .stream()
-                .map(OrderItemService::mapToDto)
-                .collect(Collectors.toList());
-    }
 
-    @Transactional(readOnly = true)
-    public OrderItemDto findById(Long id) {
-        log.debug("Request to get OrderItem : {}", id);
-        return this.orderItemRepository.findById(id).map(OrderItemService::mapToDto).orElse(null);
-    }
-
-    public OrderItemDto create(OrderItemDto orderItemDto) {
-        log.debug("Request to create OrderItem : {}", orderItemDto);
-        Order order =
-                this.orderRepository
-                        .findById(orderItemDto.getOrderId())
-                        .orElseThrow(() -> new IllegalStateException("The Order does not exist!"));
-
-        Product product =
-                this.productRepository
-                        .findById(orderItemDto.getProductId())
-                        .orElseThrow(() -> new IllegalStateException("The Product does not exist!"));
-
-        OrderItem orderItem = this.orderItemRepository.save(
-                new OrderItem(
-                        orderItemDto.getQuantity(),
-                        product,
-                        order
-                ));
-
-        order.setTotalPrice(
-                order.getTotalPrice().add(orderItem.getProduct().getPrice())
-        );
-
-        this.orderRepository.save(order);
-
-        return mapToDto(orderItem);
-    }
-
-    public void delete(Long id) {
-        log.debug("Request to delete OrderItem : {}", id);
+    public void delete(User user, Long id) {
+        OrderItem item = this.orderItemRepository.findById(id).orElseThrow();
+        if (item.getOrder().getUser().getId() != user.getId()) {
+            throw new IllegalStateException("Operation not allowed!");
+        }
         this.orderItemRepository.deleteById(id);
     }
 }
