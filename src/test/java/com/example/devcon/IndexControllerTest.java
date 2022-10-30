@@ -1,11 +1,13 @@
 package com.example.devcon;
 
+import com.example.devcon.dto.CategoryDto;
+import com.example.devcon.dto.ProductDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,6 +16,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
+import java.util.Collections;
+
+import static com.example.devcon.model.enumeration.ProductStatus.AVAILABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @SpringBootTest(classes = DevconApplication.class)
+@Sql({"/data/categories.sql", "/data/products.sql"})
 public class IndexControllerTest {
 
     @Autowired
@@ -34,29 +41,34 @@ public class IndexControllerTest {
     }
 
     @Test
-    public void testDefaultPage() throws Exception {
+    public void testFindAll() throws Exception {
 
         MvcResult result = this.mockMvc.perform(get("/"))
-                /*.andDo(print())*/
                 .andExpect(status().isOk())
                 .andReturn();
 
         ModelAndView modelAndView = result.getModelAndView();
-        assertEquals("welcome", modelAndView.getViewName());
-        assertEquals("Spring MVC Hello World", modelAndView.getModel().get("message"));
+        assertEquals("index", modelAndView.getViewName());
+        assertEquals(new ProductDto(), modelAndView.getModel().get("product"));
+        assertEquals(Collections.singletonList(
+                new ProductDto(
+                        1L,
+                        "iPhone 13",
+                        "iPhone 13 Description",
+                        BigDecimal.valueOf(60000, 2),
+                        AVAILABLE.name(),
+                        0,
+                        1L
+                )
+        ), modelAndView.getModel().get("products"));
 
-    }
-
-    @Test
-    public void testHelloPage() throws Exception {
-
-        MvcResult result = this.mockMvc.perform(get("/hello/DevCon2022"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ModelAndView modelAndView = result.getModelAndView();
-        assertEquals("welcome", modelAndView.getViewName());
-        assertEquals("DevCon2022", modelAndView.getModel().get("message"));
+        assertEquals(Collections.singletonList(
+                new CategoryDto(
+                        1L,
+                        "Phones",
+                        "Phones",
+                        1)
+        ), modelAndView.getModel().get("categories"));
 
     }
 
