@@ -96,11 +96,12 @@ public class OrderService {
     }
 
     public void addProductToOrder(User user, long productId) {
-        final Order order = orderRepository
+        Optional<Order> orderOptional = orderRepository
                 .findAllByStatusAndUser_Id(OrderStatus.NEW, user.getId())
                 .stream()
-                .min(Comparator.comparing(AbstractEntity::getCreatedDate))
-                .orElse(create(user));
+                .min(Comparator.comparing(AbstractEntity::getCreatedDate));
+
+        Order order = orderOptional.orElseGet(() -> create(user));
 
         final Product product = productRepository.getReferenceById(productId);
 
