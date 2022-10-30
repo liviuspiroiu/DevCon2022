@@ -1,13 +1,12 @@
 package com.example.devcon.web.controller;
 
-import com.example.devcon.web.dto.OrderDto;
-import com.example.devcon.model.domain.Order;
 import com.example.devcon.model.domain.User;
 import com.example.devcon.model.service.OrderItemService;
 import com.example.devcon.model.service.OrderService;
 import com.example.devcon.model.service.PaymentProcessingApi;
 import com.example.devcon.model.service.PaymentService;
-import org.springframework.security.core.Authentication;
+import com.example.devcon.web.dto.OrderDto;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;

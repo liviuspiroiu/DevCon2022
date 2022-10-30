@@ -1,12 +1,13 @@
 package com.example.devcon;
 
-import com.example.devcon.dto.AddressDto;
-import com.example.devcon.dto.OrderDto;
-import com.example.devcon.dto.OrderItemDto;
-import com.example.devcon.dto.ProductDto;
-import com.example.devcon.model.enumeration.OrderStatus;
-import com.example.devcon.repository.OrderRepository;
-import com.example.devcon.service.OrderService;
+
+import com.example.devcon.model.domain.enumeration.OrderStatus;
+import com.example.devcon.model.repository.OrderRepository;
+import com.example.devcon.model.service.OrderService;
+import com.example.devcon.web.dto.AddressDto;
+import com.example.devcon.web.dto.OrderDto;
+import com.example.devcon.web.dto.OrderItemDto;
+import com.example.devcon.web.dto.ProductDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigDecimal;
 import java.util.Collections;
 
-import static com.example.devcon.model.enumeration.ProductStatus.AVAILABLE;
+import static com.example.devcon.model.domain.enumeration.ProductStatus.AVAILABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
