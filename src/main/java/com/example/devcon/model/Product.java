@@ -1,7 +1,6 @@
 package com.example.devcon.model;
 
 import com.example.devcon.model.enumeration.ProductStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,9 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A Product.
@@ -28,7 +25,7 @@ public class Product extends AbstractEntity {
     private String name;
 
     @NotNull
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
     @NotNull
@@ -48,7 +45,7 @@ public class Product extends AbstractEntity {
     private Category category;
 
     public Product(@NotNull String name, @NotNull String description, @NotNull BigDecimal price,
-                   Integer salesCounter,  Category category) {
+                   Integer salesCounter, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -57,7 +54,7 @@ public class Product extends AbstractEntity {
     }
 
     public Product(@NotNull String name, @NotNull String description, @NotNull BigDecimal price,
-                   ProductStatus status, Integer salesCounter,  Category category) {
+                   ProductStatus status, Integer salesCounter, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;

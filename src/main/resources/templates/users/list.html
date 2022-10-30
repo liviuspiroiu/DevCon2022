@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="general.html :: headerfiles"></th:block>
+    <title>From a Monolithic Application through Microservices and into Cloud Native</title>
+</head>
+<body>
+<th:block th:include="general.html :: header"></th:block>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:if="${users != null && !users.isEmpty()}" th:each="user : ${users}"
+             class="col-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mx-auto text-center" style="padding: 40px;">
+                <div class="card-body" style="min-height: 250px">
+                    <h2 class="card-title" style="color: black">
+                        <span th:text="${user.firstName}"></span>
+                        <span> </span>
+                        <span th:text="${user.lastName}"></span>
+                    </h2>
+                    <i th:text="${user.username}"></i>
+                    <br/>
+                    <span style="height: 50px"></span>
+                    <br/>
+                    <span class="fa fa-user" style="font-size: 100px"></span>
+
+                </div>
+                <form action="#" th:action="@{/users/delete/{id}(id=${user.id})}">
+                    <input type="submit" class="openbtn" value="Delete User"/>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mx-auto text-center" style="padding: 40px">
+
+                <div class="card-body" style="min-height: 250px">
+                    <h2 class="card-title" style="color: black">
+                        <span class="fa fa-plus-circle" style="font-size: 40px"></span>
+                    </h2>
+                </div>
+
+                <button class="openbtn" onclick="openNav()">Add User</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /.container -->
+
+<div id="mySidebar" class="sidebar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="#" th:action="@{/users/adduser}" th:object="${user}" method="post">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="firstName" class="col-form-label">First name</label>
+                            <input type="text" th:field="*{firstName}" class="form-control" id="firstName"
+                                   placeholder="First name">
+                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="lastName" class="col-form-label">Last name</label>
+                            <input type="text" th:field="*{lastName}" class="form-control" id="lastName"
+                                   placeholder="Last name">
+                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="username" class="col-form-label">Email</label>
+                            <input type="text" th:field="*{username}" class="form-control" id="username"
+                                   placeholder="Email">
+                            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="telephone" class="col-form-label">Telephone</label>
+                            <input type="text" th:field="*{telephone}" class="form-control" id="telephone"
+                                   placeholder="Telephone">
+                            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="password" class="col-form-label">Password</label>
+                            <input type="password" th:field="*{password}" class="form-control" id="password"
+                                   placeholder="Password">
+                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                  class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="address.address1" class="col-form-label">Address 1</label>
+                            <input type="text" th:field="*{address.address1}" class="form-control" id="address.address1"
+                                   placeholder="Addres 1">
+                            <span th:if="${#fields.hasErrors('address.address1')}" th:errors="*{address.address1}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="address.address2" class="col-form-label">Address 2</label>
+                            <input type="text" th:field="*{address.address2}" class="form-control" id="address.address2"
+                                   placeholder="Address 2">
+                            <span th:if="${#fields.hasErrors('address.address2')}" th:errors="*{address.address2}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label for="address.city" class="col-form-label">City</label>
+                            <input type="text" th:field="*{address.city}" class="form-control" id="address.city"
+                                   placeholder="City">
+                            <span th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="address.country" class="col-form-label">Country</label>
+                            <input type="text" th:field="*{address.country}" class="form-control" id="address.country"
+                                   placeholder="Country">
+                            <span th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="address.postcode" class="col-form-label">Postcode</label>
+                            <input type="text" th:field="*{address.postcode}" class="form-control" id="address.postcode"
+                                   placeholder="Postcode">
+                            <span th:if="${#fields.hasErrors('address.postcode')}" th:errors="*{address.postcode}"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-12 mt-5">
+                            <input type="submit" class="btn openbtn align-self-center" style="min-width: 320px" value="Add User">
+                        </div>
+                    </div>
+                </form>
+                <div class="row d-flex justify-content-center align-content-center">
+                    <div class="col-md-12 mt-5">
+                        <button class="openbtn" style="min-width: 320px" onclick="closeNav()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

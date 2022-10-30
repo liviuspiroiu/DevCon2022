@@ -3,6 +3,7 @@ package com.example.devcon.controller;
 import com.example.devcon.model.User;
 import com.example.devcon.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,29 +20,27 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
     public String showUserList(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        return "users";
-    }
-
-    @GetMapping("/signup")
-    public String showSignUpForm(Model model, User user) {
-        model.addAttribute("user", user);
-        return "add-user";
+        model.addAttribute("user", new User());
+        return "/users/list";
     }
 
     @PostMapping("/adduser")
-    public String addUser(@Valid User user, BindingResult result, Model model) {
+    public String addUser(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
-            return "add-user";
+            return "/users/list";
         }
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/users/";
     }
@@ -51,14 +50,14 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         model.addAttribute("user", user);
 
-        return "update-user";
+        return "/users/update";
     }
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             user.setId(id);
-            return "update-user";
+            return "/users/update";
         }
 
         userRepository.save(user);

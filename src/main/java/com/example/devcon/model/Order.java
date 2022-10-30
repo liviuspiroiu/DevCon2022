@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -44,22 +45,20 @@ public class Order extends AbstractEntity {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<OrderItem> orderItems;
+    private Set<OrderItem> orderItems = new HashSet<>();
 
-    @OneToOne
-    @JsonIgnore
-    private Cart cart;
+    @ManyToOne
+    private User user;
 
     public Order(@NotNull BigDecimal totalPrice, @NotNull OrderStatus status,
                  ZonedDateTime shipped, Payment payment, Address shipmentAddress,
-                 Set<OrderItem> orderItems, Cart cart) {
+                 Set<OrderItem> orderItems) {
         this.totalPrice = totalPrice;
         this.status = status;
         this.shipped = shipped;
         this.payment = payment;
         this.shipmentAddress = shipmentAddress;
         this.orderItems = orderItems;
-        this.cart = cart;
     }
 
     @Override
@@ -72,13 +71,12 @@ public class Order extends AbstractEntity {
                 Objects.equals(shipped, order.shipped) &&
                 Objects.equals(payment, order.payment) &&
                 Objects.equals(shipmentAddress, order.shipmentAddress) &&
-                Objects.equals(orderItems, order.orderItems) &&
-                Objects.equals(cart, order.cart);
+                Objects.equals(orderItems, order.orderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(totalPrice, status, shipped, payment, shipmentAddress, cart);
+        return Objects.hash(totalPrice, status, shipped, payment, shipmentAddress);
     }
 
     @Override
@@ -89,7 +87,6 @@ public class Order extends AbstractEntity {
                 ", shipped=" + shipped +
                 ", payment=" + payment +
                 ", shipmentAddress=" + shipmentAddress +
-                ", cart=" + cart.getId() +
                 '}';
     }
 }
