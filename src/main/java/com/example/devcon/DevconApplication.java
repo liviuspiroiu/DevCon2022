@@ -9,8 +9,6 @@ public class DevconApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DevconApplication.class, args);
-        String pass = new BCryptPasswordEncoder().encode("pass");
-        System.out.println(pass);
     }
 
 }
