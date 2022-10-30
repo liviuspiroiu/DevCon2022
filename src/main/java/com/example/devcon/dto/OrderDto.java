@@ -20,4 +20,5 @@ public class OrderDto {
     private Long paymentId;
     private AddressDto shipmentAddress;
     private Set<OrderItemDto> orderItems;
+    private String userFullName;
 }

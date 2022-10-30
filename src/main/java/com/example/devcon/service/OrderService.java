@@ -53,7 +53,8 @@ public class OrderService {
                     order.getShipped(),
                     order.getPayment() != null ? order.getPayment().getId() : null,
                     AddressService.mapToDto(order.getShipmentAddress()),
-                    orderItems
+                    orderItems,
+                    order.getUser().getFirstName() + " " + order.getUser().getLastName()
             );
         }
         return null;

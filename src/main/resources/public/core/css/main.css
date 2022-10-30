@@ -78,7 +78,19 @@ h2 {
 }
 
 th, td {
-    padding: 5px;
+    padding: 2px;
+}
+
+/* Payments */
+.payment-card {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid #e7eaec;
+}
+.payment-icon-big {
+    font-size: 60px;
+    color: #d1dade;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

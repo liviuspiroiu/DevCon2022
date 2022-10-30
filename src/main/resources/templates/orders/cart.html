@@ -73,7 +73,7 @@
     <div class="row" style="min-height: 10px"></div>
 
     <div class="row">
-        <div class="col-5 card mx-auto">
+        <div class="col-md-4 payment-card">
             <div class="card-title text-center" style="padding: 5px">
                 <h2>
                     <span>Billing address</span>
@@ -100,9 +100,7 @@
                 </table>
             </div>
         </div>
-        <div class="col-2 mx-auto">
-        </div>
-        <div class="col-5 card mx-auto">
+        <div class="col-md-4 payment-card">
             <div class="card-title text-center" style="padding: 5px">
                 <h2>
                     <span>Shipping address</span>
@@ -129,13 +127,53 @@
                 </table>
             </div>
         </div>
+        <div class="col-md-4 payment-card">
+            <div class="card-title" style="padding: 5px">
+                <h2>
+                    <span th:text="${order.userFullName}"></span>
+                </h2>
+            </div>
+            <div class="body">
+                <i class="fa fa-cc-visa payment-icon-big text-success"></i>
+                <h2>
+                    **** **** **** 1060
+                </h2>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <small>
+                            <strong>Expiry date:</strong> 10/25
+                        </small>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row" style="min-height: 30px"></div>
-
-    <div class="row text-center">
-        <a class="col-12" href="#" th:href="@{/products/addProductToOrder}">
-            <button class="openbtn">Check-out</button>
+    <div id="payment-checkout" class="row text-center">
+        <a class="col-12" href="#">
+            <button class="openbtn" onclick="pay()">
+                <span>Check-out</span>
+            </button>
+        </a>
+    </div>
+    <div id="payment-paying" class="row text-center" style="display: none">
+        <a class="col-12" href="#">
+            <button class="openbtn">
+                <span class="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"></span>
+                <span>Paying...</span>
+            </button>
+        </a>
+    </div>
+    <div id="payment-accepted" class="row text-center" style="display: none">
+        <a class="col-12" href="#">
+            <button class="openbtn">
+                <span class="fa fa-check-double" role="status"
+                      aria-hidden="true"></span>
+                <span>Payment accepted</span>
+            </button>
         </a>
     </div>
 </div>
