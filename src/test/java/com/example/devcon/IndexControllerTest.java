@@ -1,7 +1,7 @@
 package com.example.devcon;
 
-import com.example.devcon.web.dto.CategoryDto;
-import com.example.devcon.web.dto.ProductDto;
+import com.example.devcon.common.dto.CategoryDto;
+import com.example.devcon.common.dto.ProductDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigDecimal;
 import java.util.Collections;
 
-import static com.example.devcon.model.domain.enumeration.ProductStatus.AVAILABLE;
+import static com.example.devcon.products.ProductStatus.AVAILABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
