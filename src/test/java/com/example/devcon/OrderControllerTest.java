@@ -110,7 +110,7 @@ public class OrderControllerTest {
         assertEquals("/orders/cart", modelAndView.getViewName());
         assertEquals(new OrderDto(
                 2L,
-                BigDecimal.valueOf(60000, 2),
+                BigDecimal.valueOf(180000, 2),
                 OrderStatus.NEW.name(),
                 null,
                 null,
@@ -155,7 +155,7 @@ public class OrderControllerTest {
 
         assertEquals(new OrderDto(
                 2L,
-                BigDecimal.valueOf(60000, 2),
+                BigDecimal.valueOf(180000, 2),
                 OrderStatus.SENT.name(),
                 null,
                 1L,
@@ -180,6 +180,128 @@ public class OrderControllerTest {
                         ),
                         2L
                 )),
+                "Liviu Spiroiu"
+        ), order);
+    }
+
+    @Test
+    @WithUserDetails("liviu.spiroiu@cognyte.com")
+    public void increaseQuantity() throws Exception {
+
+        MvcResult result = this.mockMvc
+                .perform(get("/orders/increaseQuantity/2/2"))
+                .andExpect(status().isFound())
+                .andReturn();
+
+        ModelAndView modelAndView = result.getModelAndView();
+        assertEquals("redirect:/orders/cart", modelAndView.getViewName());
+
+        final OrderDto order = OrderService.mapToDto(orderRepository.findById(2L).orElseThrow());
+
+        assertEquals(new OrderDto(
+                2L,
+                BigDecimal.valueOf(240000, 2),
+                OrderStatus.NEW.name(),
+                null,
+                null,
+                new AddressDto(
+                        "Dionisie Lupu 66",
+                        "Sector 1",
+                        "Bucuresti",
+                        "030167",
+                        "RO"
+                ),
+                Collections.singleton(new OrderItemDto(
+                        2L,
+                        4L,
+                        new ProductDto(
+                                1L,
+                                "iPhone 13",
+                                "iPhone 13 Description",
+                                BigDecimal.valueOf(60000, 2),
+                                AVAILABLE.name(),
+                                0,
+                                1L
+                        ),
+                        2L
+                )),
+                "Liviu Spiroiu"
+        ), order);
+    }
+
+    @Test
+    @WithUserDetails("liviu.spiroiu@cognyte.com")
+    public void decreaseQuantity() throws Exception {
+
+        MvcResult result = this.mockMvc
+                .perform(get("/orders/decreaseQuantity/2/2"))
+                .andExpect(status().isFound())
+                .andReturn();
+
+        ModelAndView modelAndView = result.getModelAndView();
+        assertEquals("redirect:/orders/cart", modelAndView.getViewName());
+
+        final OrderDto order = OrderService.mapToDto(orderRepository.findById(2L).orElseThrow());
+
+        assertEquals(new OrderDto(
+                2L,
+                BigDecimal.valueOf(120000, 2),
+                OrderStatus.NEW.name(),
+                null,
+                null,
+                new AddressDto(
+                        "Dionisie Lupu 66",
+                        "Sector 1",
+                        "Bucuresti",
+                        "030167",
+                        "RO"
+                ),
+                Collections.singleton(new OrderItemDto(
+                        2L,
+                        2L,
+                        new ProductDto(
+                                1L,
+                                "iPhone 13",
+                                "iPhone 13 Description",
+                                BigDecimal.valueOf(60000, 2),
+                                AVAILABLE.name(),
+                                0,
+                                1L
+                        ),
+                        2L
+                )),
+                "Liviu Spiroiu"
+        ), order);
+    }
+
+    @Test
+    @WithUserDetails("liviu.spiroiu@cognyte.com")
+    public void deleteItem() throws Exception {
+
+        MvcResult result = this.mockMvc
+                .perform(get("/orders/deleteItem/2"))
+                .andExpect(status().isFound())
+                .andReturn();
+
+        ModelAndView modelAndView = result.getModelAndView();
+        assertEquals("redirect:/orders/cart", modelAndView.getViewName());
+
+        final OrderDto order = OrderService.mapToDto(orderRepository.findById(2L).orElseThrow());
+
+        assertEquals(new OrderDto(
+                2L,
+                BigDecimal.valueOf(0, 2),
+                OrderStatus.NEW.name(),
+                null,
+                null,
+                new AddressDto(
+                        "Dionisie Lupu 66",
+                        "Sector 1",
+                        "Bucuresti",
+                        "030167",
+                        "RO"
+                ),
+                Collections.emptySet(),
                 "Liviu Spiroiu"
         ), order);
     }

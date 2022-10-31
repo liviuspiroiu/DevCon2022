@@ -1,12 +1,12 @@
 package com.example.devcon.model.service;
 
 import com.example.devcon.model.domain.*;
-import com.example.devcon.web.dto.OrderDto;
-import com.example.devcon.web.dto.OrderItemDto;
 import com.example.devcon.model.domain.enumeration.OrderStatus;
 import com.example.devcon.model.repository.OrderItemRepository;
 import com.example.devcon.model.repository.OrderRepository;
 import com.example.devcon.model.repository.ProductRepository;
+import com.example.devcon.web.dto.OrderDto;
+import com.example.devcon.web.dto.OrderItemDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -72,12 +72,6 @@ public class OrderService {
                         )
                 )
         );
-    }
-
-
-    public void delete(Long id) {
-        log.debug("Request to delete Order : {}", id);
-        this.orderRepository.deleteById(id);
     }
 
     public OrderDto findCurrentOrder(User user) {
@@ -156,5 +150,21 @@ public class OrderService {
                 .findAllByUserId(user.getId()).stream()
                 .filter(order -> order.getStatus() != OrderStatus.NEW)
                 .map(OrderService::mapToDto).collect(Collectors.toList());
+    }
+
+    public void deleteItem(User user, Long id) {
+        OrderItem item = this.orderItemRepository.findById(id).orElseThrow();
+        final Order order = item.getOrder();
+
+        if (order.getUser().getId() != user.getId()) {
+            throw new IllegalStateException("Operation not allowed!");
+        }
+
+        order.getOrderItems().remove(item);
+        order.setTotalPrice(order.getTotalPrice()
+                .subtract(item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))));
+
+        orderItemRepository.deleteById(id);
+        orderRepository.save(order);
     }
 }

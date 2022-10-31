@@ -22,17 +22,14 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
-    private final OrderItemService orderItemService;
 
     private final PaymentProcessingApi paymentProcessingApi;
 
     public OrderController(final OrderService orderService,
                            final PaymentService paymentService,
-                           final OrderItemService orderItemService,
                            final PaymentProcessingApi paymentProcessingApi) {
         this.orderService = orderService;
         this.paymentService = paymentService;
-        this.orderItemService = orderItemService;
         this.paymentProcessingApi = paymentProcessingApi;
     }
 
@@ -76,7 +73,7 @@ public class OrderController {
     @GetMapping(value = "/deleteItem/{id}")
     public String deleteItem(@AuthenticationPrincipal User user,
                              @PathVariable long id) {
-        orderItemService.delete(user, id);
+        orderService.deleteItem(user, id);
         return "redirect:/orders/cart";
     }
 }
