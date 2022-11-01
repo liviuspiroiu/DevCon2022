@@ -66,7 +66,7 @@ create table if not exists  orders
     constraint UK_haujdjk1ohmeixjhnhslchrp1
         unique (payment_id),
     constraint FKrvoq8pbatwvnfuwokuo2kgmo3
-        foreign key (user_user_id) references sys_users (user_id)
+        foreign key (user_user_id) references sys_users (id)
 );
 
 create table if not exists  order_items
