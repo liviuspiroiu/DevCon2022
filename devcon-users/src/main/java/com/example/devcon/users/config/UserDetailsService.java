@@ -1,5 +1,6 @@
-package com.example.devcon.users;
+package com.example.devcon.users.config;
 
+import com.example.devcon.users.model.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

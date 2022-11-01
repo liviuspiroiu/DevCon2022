@@ -1,5 +1,6 @@
-package com.example.devcon.users;
+package com.example.devcon.users.model;
 
+import com.example.devcon.common.domain.AbstractEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,11 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "SYS_USERS")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private long id;
+public class User extends AbstractEntity implements UserDetails {
     @Column(name = "username")
     private String username;
 
@@ -38,37 +35,14 @@ public class User implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String email) {
-        this.username = email;
-    }
 
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override

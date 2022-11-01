@@ -1,4 +1,4 @@
-package com.example.devcon.users;
+package com.example.devcon.users.model;
 
 
 import lombok.AllArgsConstructor;
