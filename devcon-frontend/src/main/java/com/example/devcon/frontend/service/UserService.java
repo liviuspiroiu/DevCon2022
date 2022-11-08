@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value = "users-feign-client", url = "http://127.0.0.1:8081/users", configuration = OAuthFeignConfig.class)
+@FeignClient(value = "devcon-users", path = "/users", configuration = OAuthFeignConfig.class)
 public interface UserService {
     @RequestMapping(method = RequestMethod.GET, value = "/")
     List<UserDto> findAll();

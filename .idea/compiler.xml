@@ -12,6 +12,7 @@
         <module name="devcon-users" />
         <module name="devcon-frontend" />
         <module name="devcon-payments" />
+        <module name="devcon-discovery" />
         <module name="devcon-products" />
         <module name="devcon-orders" />
       </profile>
@@ -20,6 +21,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="devcon-auth" options="-parameters" />
+      <module name="devcon-discovery" options="-parameters" />
       <module name="devcon-frontend" options="-parameters" />
       <module name="devcon-orders" options="-parameters" />
       <module name="devcon-payments" options="-parameters" />

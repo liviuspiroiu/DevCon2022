@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(value = "order-feign-client", url = "http://127.0.0.1:8085/orders", configuration = OAuthFeignConfig.class)
+@FeignClient(value = "devcon-orders", path = "/orders", configuration = OAuthFeignConfig.class)
 public interface OrderService {
     @RequestMapping(method = RequestMethod.GET, value = "/addProductToOrder/{id}")
     void addProductToOrder(@PathVariable("id") long id);

@@ -22,6 +22,7 @@
         <module>devcon-payments</module>
         <module>devcon-products</module>
         <module>devcon-frontend</module>
+        <module>devcon-discovery</module>
     </modules>
 
 </project>
