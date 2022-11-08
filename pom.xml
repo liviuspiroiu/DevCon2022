@@ -23,6 +23,7 @@
         <module>devcon-products</module>
         <module>devcon-frontend</module>
         <module>devcon-discovery</module>
+        <module>devcon-api-gateway</module>
     </modules>
 
 </project>

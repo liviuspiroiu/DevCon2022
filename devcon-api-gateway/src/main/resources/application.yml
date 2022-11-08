@@ -1,0 +1,46 @@
+server:
+  port: 8762
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+spring:
+  application:
+    name: devcon-api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: users
+          uri: lb://devcon-users
+          predicates:
+            - Path=/users/
+        - id: products
+          uri: lb://devcon-products
+          predicates:
+            - Path=/products/
+        - id: categories
+          uri: lb://devcon-products
+          predicates:
+            - Path=/categories/
+        - id: orders
+          uri: lb://devcon-orders
+          predicates:
+            - Path=/orders/
+        - id: payments
+          uri: lb://devcon-payments
+          predicates:
+            - Path=/payments/
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    preferIpAddress: true

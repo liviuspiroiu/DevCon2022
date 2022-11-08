@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="devcon-common" />
+        <module name="devcon-api-gateway" />
         <module name="devcon-auth" />
         <module name="devcon-users" />
         <module name="devcon-frontend" />
@@ -20,6 +21,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="devcon-api-gateway" options="-parameters" />
       <module name="devcon-auth" options="-parameters" />
       <module name="devcon-discovery" options="-parameters" />
       <module name="devcon-frontend" options="-parameters" />
