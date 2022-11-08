@@ -7,22 +7,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="devcon-common" />
+        <module name="devcon-auth" />
         <module name="devcon-users" />
         <module name="devcon-frontend" />
-        <module name="devcon-common" />
         <module name="devcon-payments" />
         <module name="devcon-products" />
         <module name="devcon-orders" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="DevCon2022" target="1.6" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="devcon" options="" />
-      <module name="devcon-common" options="-parameters" />
+      <module name="devcon-auth" options="-parameters" />
       <module name="devcon-frontend" options="-parameters" />
       <module name="devcon-orders" options="-parameters" />
       <module name="devcon-payments" options="-parameters" />

@@ -3,13 +3,12 @@ package com.example.devcon.users.controller;
 import com.example.devcon.users.model.User;
 import com.example.devcon.users.model.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UserController {
 
     final UserRepository userRepository;
@@ -27,13 +26,6 @@ public class UserController {
     @PostMapping("/")
     public ResponseEntity<User> save(@RequestBody User user) {
         return ResponseEntity.ok(userRepository.save(user));
-    }
-
-    @GetMapping(value = "/{username}")
-    public ResponseEntity<User> findUserByUsername(@PathVariable final String username) {
-        final User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/delete/{id}")

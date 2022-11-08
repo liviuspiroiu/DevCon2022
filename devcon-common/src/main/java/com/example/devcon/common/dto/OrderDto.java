@@ -1,5 +1,6 @@
 package com.example.devcon.common.dto;
 
+import com.example.devcon.common.domain.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,14 @@
 package com.example.devcon.users.model;
 
 import com.example.devcon.common.domain.AbstractEntity;
+import com.example.devcon.common.domain.Address;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +22,7 @@ public class User extends AbstractEntity implements UserDetails {
     private String password;
 
     @Column(name = "role")
-    private String role = "ROLE_USER";
+    private String role = "ROLE_ADMIN";
 
     @Column(name = "first_name")
     private String firstName;

@@ -1,12 +1,9 @@
 package com.example.devcon.frontend.controllers;
 
 import com.example.devcon.common.dto.ProductDto;
-import com.example.devcon.common.domain.User;
-import com.example.devcon.products.CategoryService;
-import com.example.devcon.orders.OrderService;
-import com.example.devcon.products.ProductService;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
+import com.example.devcon.frontend.service.CategoryService;
+import com.example.devcon.frontend.service.OrderService;
+import com.example.devcon.frontend.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -45,7 +42,6 @@ public class IndexController {
     }
 
     @PostMapping("/products")
-    @Secured("ROLE_ADMIN")
     public String addProduct(@Valid ProductDto product, BindingResult result) {
         if (result.hasErrors()) {
             return "index";
@@ -55,10 +51,8 @@ public class IndexController {
     }
 
     @GetMapping("/products/addProductToOrder/{id}")
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String addProductToOrder(Authentication auth, @PathVariable long id) {
-        final User user = (User) auth.getPrincipal();
-        this.orderService.addProductToOrder(user, id);
+    public String addProductToOrder(@PathVariable long id) {
+        this.orderService.addProductToOrder(id);
         return "redirect:/";
     }
 }

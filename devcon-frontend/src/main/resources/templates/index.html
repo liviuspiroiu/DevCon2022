@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="en" >
+      lang="en">
 <head>
     <th:block th:include="general.html :: headerfiles"></th:block>
     <title>From a Monolithic Application through Microservices and into Cloud Native</title>
@@ -37,7 +36,7 @@
             </div>
         </div>
 
-        <div sec:authorize="hasRole('ADMIN')" class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
             <div class="card mx-auto text-center" style="padding: 40px">
 
                 <div class="card-body" style="min-height: 400px">

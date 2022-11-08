@@ -13,4 +13,5 @@ public class PaymentDto {
     private String paypalPaymentId;
     private String status;
     private Long orderId;
+    private Long userId;
 }

@@ -1,0 +1,22 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/devcon_users
+    username: root
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+keycloak:
+  server:
+    contextPath: /auth
+    adminUser:
+      username: devcon-admin
+      password: pass
+    realmImportFile: devcon-realm.json
