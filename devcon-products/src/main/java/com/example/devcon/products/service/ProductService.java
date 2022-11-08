@@ -2,8 +2,8 @@ package com.example.devcon.products.service;
 
 import com.example.devcon.common.dto.ProductDto;
 import com.example.devcon.products.model.CategoryRepository;
-import com.example.devcon.products.model.ProductRepository;
 import com.example.devcon.products.model.Product;
+import com.example.devcon.products.model.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,6 @@ public class ProductService {
                     product.getName(),
                     product.getDescription(),
                     product.getPrice(),
-                    product.getStatus().name(),
-                    product.getSalesCounter(),
                     product.getCategory().getId()
             );
         }

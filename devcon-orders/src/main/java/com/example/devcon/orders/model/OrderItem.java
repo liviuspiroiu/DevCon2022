@@ -34,6 +34,8 @@ public class OrderItem extends AbstractEntity {
 
     private String productDescription;
 
+    private long categoryId;
+
     @ManyToOne
     private Order order;
 
@@ -42,6 +44,7 @@ public class OrderItem extends AbstractEntity {
                      BigDecimal productPrice,
                      String productName,
                      String productDescription,
+                     long categoryId,
                      Order order) {
         this.quantity = quantity;
         this.productId = productId;
@@ -49,6 +52,7 @@ public class OrderItem extends AbstractEntity {
         this.productPrice = productPrice;
         this.productName = productName;
         this.productDescription = productDescription;
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -61,6 +65,7 @@ public class OrderItem extends AbstractEntity {
                 Objects.equals(productPrice, orderItem.productPrice) &&
                 Objects.equals(productName, orderItem.productName) &&
                 Objects.equals(productDescription, orderItem.productDescription) &&
+                Objects.equals(categoryId, orderItem.categoryId) &&
                 Objects.equals(order, orderItem.order);
     }
 
@@ -89,7 +94,8 @@ public class OrderItem extends AbstractEntity {
                         this.productId,
                         this.productName,
                         this.productDescription,
-                        this.productPrice
+                        this.productPrice,
+                        this.categoryId
                 ),
                 this.getOrder().getId()
         );

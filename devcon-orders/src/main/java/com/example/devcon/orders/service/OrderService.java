@@ -79,7 +79,8 @@ public class OrderService {
                                   String lastName,
                                   Address shippingAddress,
                                   String productName,
-                                  String productDescription
+                                  String productDescription,
+                                  long categoryId
     ) {
         Optional<Order> orderOptional = orderRepository
                 .findAllByStatusAndUserId(OrderStatus.NEW, userId)
@@ -92,7 +93,7 @@ public class OrderService {
                 .stream()
                 .filter(item -> item.getProductId().equals(productId))
                 .findFirst()
-                .orElse(new OrderItem(0L, productId, productPrice, productName, productDescription, order));
+                .orElse(new OrderItem(0L, productId, productPrice, productName, productDescription, categoryId, order));
 
         orderItem.setQuantity(orderItem.getQuantity() + 1);
         orderItemRepository.save(orderItem);
