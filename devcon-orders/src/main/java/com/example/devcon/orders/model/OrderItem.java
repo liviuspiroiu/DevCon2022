@@ -1,6 +1,8 @@
 package com.example.devcon.orders.model;
 
 import com.example.devcon.common.domain.AbstractEntity;
+import com.example.devcon.common.dto.OrderItemDto;
+import com.example.devcon.common.dto.ProductDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,14 +30,25 @@ public class OrderItem extends AbstractEntity {
 
     private BigDecimal productPrice;
 
+    private String productName;
+
+    private String productDescription;
+
     @ManyToOne
     private Order order;
 
-    public OrderItem(@NotNull Long quantity, Long productId, BigDecimal productPrice, Order order) {
+    public OrderItem(@NotNull Long quantity,
+                     Long productId,
+                     BigDecimal productPrice,
+                     String productName,
+                     String productDescription,
+                     Order order) {
         this.quantity = quantity;
         this.productId = productId;
         this.order = order;
         this.productPrice = productPrice;
+        this.productName = productName;
+        this.productDescription = productDescription;
     }
 
     @Override
@@ -45,6 +58,9 @@ public class OrderItem extends AbstractEntity {
         OrderItem orderItem = (OrderItem) o;
         return Objects.equals(quantity, orderItem.quantity) &&
                 Objects.equals(productId, orderItem.productId) &&
+                Objects.equals(productPrice, orderItem.productPrice) &&
+                Objects.equals(productName, orderItem.productName) &&
+                Objects.equals(productDescription, orderItem.productDescription) &&
                 Objects.equals(order, orderItem.order);
     }
 
@@ -64,4 +80,19 @@ public class OrderItem extends AbstractEntity {
     public void updateQuantity(long value) {
         this.quantity += value;
     }
+
+    public OrderItemDto mapToDto() {
+        return new OrderItemDto(
+                this.getId(),
+                this.getQuantity(),
+                new ProductDto(
+                        this.productId,
+                        this.productName,
+                        this.productDescription,
+                        this.productPrice
+                ),
+                this.getOrder().getId()
+        );
+    }
+
 }

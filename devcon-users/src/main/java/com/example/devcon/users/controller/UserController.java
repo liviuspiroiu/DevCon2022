@@ -1,5 +1,6 @@
 package com.example.devcon.users.controller;
 
+import com.example.devcon.common.dto.UserDto;
 import com.example.devcon.users.model.User;
 import com.example.devcon.users.model.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,12 @@ public class UserController {
     public ResponseEntity<List<User>> list() {
         final List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/findByUsername/{username}")
+    public ResponseEntity<UserDto> findByUsername(@PathVariable String username) {
+        final UserDto user = userRepository.findByUsername(username).orElseThrow().mapToDto();
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/")

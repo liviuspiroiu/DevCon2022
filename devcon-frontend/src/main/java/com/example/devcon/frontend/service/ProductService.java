@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(value = "product-feign-client", url = "http://127.0.0.1:8081/products", configuration = OAuthFeignConfig.class)
+@FeignClient(value = "product-feign-client", url = "http://127.0.0.1:8082/products", configuration = OAuthFeignConfig.class)
 public interface ProductService {
     @RequestMapping(method = RequestMethod.GET, value = "/")
     List<ProductDto> findAll();

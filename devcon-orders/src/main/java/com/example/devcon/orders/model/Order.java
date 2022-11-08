@@ -5,7 +5,6 @@ import com.example.devcon.common.domain.Address;
 import com.example.devcon.common.dto.OrderDto;
 import com.example.devcon.common.dto.OrderItemDto;
 import com.example.devcon.common.enums.OrderStatus;
-import com.example.devcon.orders.service.OrderItemService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -101,7 +100,7 @@ public class Order extends AbstractEntity {
         Set<OrderItemDto> orderItems = this
                 .getOrderItems()
                 .stream()
-                .map(OrderItemService::mapToDto)
+                .map(OrderItem::mapToDto)
                 .collect(Collectors.toSet());
 
         return new OrderDto(

@@ -4,6 +4,8 @@ import com.example.devcon.common.dto.ProductDto;
 import com.example.devcon.frontend.service.CategoryService;
 import com.example.devcon.frontend.service.OrderService;
 import com.example.devcon.frontend.service.ProductService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -33,7 +36,7 @@ public class IndexController {
     }
 
     @GetMapping
-    public String list(ModelMap model) {
+    public String list( ModelMap model) {
         final List<ProductDto> all = this.productService.findAll();
         model.addAttribute("products", all);
         model.addAttribute("product", new ProductDto());

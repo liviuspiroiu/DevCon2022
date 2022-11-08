@@ -19,22 +19,14 @@ spring:
     oauth2:
       client:
         registration:
-          frontend-client-oidc:
-            provider: spring
-            client-id: frontend-client
-            client-secret: "$2a$10$b3yTGjkeAN8mcox4R06wn.MEVRFYQncTtHqeDQ.BIkHXWITVfp8W2"
+          keycloak:
+            provider: keycloak
+            client-id: jwtClient
+            client-secret: jwtClientSecret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
-            client-name: frontend-client-oidc
-          frontend-client-authorization-code:
-            provider: spring
-            client-id: frontend-client
-            client-secret: "$2a$10$b3yTGjkeAN8mcox4R06wn.MEVRFYQncTtHqeDQ.BIkHXWITVfp8W2"
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8080/authorized"
-            scope: frontend.read
-            client-name: frontend-client-authorization-code
+            client-name: jwtClient
         provider:
-          spring:
-            issuer-uri: http://auth-server:9000
+          keycloak:
+            issuer-uri: http://localhost:8083/auth/realms/devcon
+            user-name-attribute: preferred_username

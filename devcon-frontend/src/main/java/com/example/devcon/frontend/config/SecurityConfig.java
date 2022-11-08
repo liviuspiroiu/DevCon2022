@@ -1,32 +1,41 @@
 package com.example.devcon.frontend.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
+@Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-        http.antMatcher("/**").authorizeRequests()
-                .antMatchers( "/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login(oauth2Login ->
-                        oauth2Login.loginPage("/oauth2/authorization/frontend-client-oidc"))
-                .oauth2Client(withDefaults());
-        return http.build();
+    SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
+        this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers("/**", "/users*", "/orders/**")
+            .hasRole("USER")
+            .anyRequest()
+            .permitAll();
+        http.oauth2Login()
+            .and()
+            .logout()
+            .addLogoutHandler(keycloakLogoutHandler)
+            .logoutSuccessUrl("/");
+        return http.build();
     }
 }

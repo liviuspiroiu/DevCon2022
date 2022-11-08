@@ -3,7 +3,7 @@ package com.example.devcon.orders.service;
 import com.example.devcon.common.domain.AbstractEntity;
 import com.example.devcon.common.domain.Address;
 import com.example.devcon.common.dto.OrderDto;
-import com.example.devcon.common.dto.PaymentDto;
+import com.example.devcon.common.dto.UserDto;
 import com.example.devcon.common.enums.OrderStatus;
 import com.example.devcon.orders.model.Order;
 import com.example.devcon.orders.model.OrderItem;
@@ -59,11 +59,9 @@ public class OrderService {
         return orderRepository.findAllByUserId(userId).stream().map(Order::mapToDto).collect(Collectors.toList());
     }
 
-    public OrderDto findCurrentOrder(Long userId, String firstName,
-                                     String lastName,
-                                     Address shippingAddress) {
+    public OrderDto findCurrentOrder(UserDto userDto) {
         Optional<Order> order = orderRepository
-                .findAllByStatusAndUserId(OrderStatus.NEW, userId)
+                .findAllByStatusAndUserId(OrderStatus.NEW, userDto.getId())
                 .stream()
                 .min(Comparator.comparing(AbstractEntity::getCreatedDate));
 
@@ -71,7 +69,7 @@ public class OrderService {
             return order.get().mapToDto();
         }
 
-        return create(userId, firstName, lastName, shippingAddress).mapToDto();
+        return create(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), userDto.getAddress().createFromDto()).mapToDto();
     }
 
     public void addProductToOrder(Long userId,
@@ -79,7 +77,10 @@ public class OrderService {
                                   BigDecimal productPrice,
                                   String firstName,
                                   String lastName,
-                                  Address shippingAddress) {
+                                  Address shippingAddress,
+                                  String productName,
+                                  String productDescription
+    ) {
         Optional<Order> orderOptional = orderRepository
                 .findAllByStatusAndUserId(OrderStatus.NEW, userId)
                 .stream()
@@ -91,7 +92,7 @@ public class OrderService {
                 .stream()
                 .filter(item -> item.getProductId().equals(productId))
                 .findFirst()
-                .orElse(new OrderItem(0L, productId, productPrice, order));
+                .orElse(new OrderItem(0L, productId, productPrice, productName, productDescription, order));
 
         orderItem.setQuantity(orderItem.getQuantity() + 1);
         orderItemRepository.save(orderItem);

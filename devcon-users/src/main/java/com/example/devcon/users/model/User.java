@@ -2,6 +2,11 @@ package com.example.devcon.users.model;
 
 import com.example.devcon.common.domain.AbstractEntity;
 import com.example.devcon.common.domain.Address;
+import com.example.devcon.common.dto.UserDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +18,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "SYS_USERS")
 public class User extends AbstractEntity implements UserDetails {
     @Column(name = "username")
@@ -39,29 +48,24 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
 
-    public String getUsername() {
-        return username;
-    }
-
-
     @Override
-    public String getPassword() {
-        return password;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> this.role);
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override
@@ -69,48 +73,17 @@ public class User extends AbstractEntity implements UserDetails {
         return enabled;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> this.role);
+    public UserDto mapToDto() {
+        return new UserDto(
+                this.getId(),
+                this.username,
+                this.password,
+                this.role,
+                this.firstName,
+                this.lastName,
+                this.telephone,
+                this.address.mapToDto(),
+                this.enabled
+        );
     }
 }

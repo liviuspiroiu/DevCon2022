@@ -4,7 +4,10 @@ import com.example.devcon.common.dto.OrderDto;
 import com.example.devcon.common.dto.UserDto;
 import com.example.devcon.frontend.service.OrderService;
 import com.example.devcon.frontend.service.PaymentService;
+import com.example.devcon.frontend.service.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,24 +23,28 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
+    private final UserService userService;
 
 
     public OrderController(final OrderService orderService,
-                           final PaymentService paymentService) {
+                           final PaymentService paymentService, UserService userService) {
         this.orderService = orderService;
         this.paymentService = paymentService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/")
     public String list(ModelMap model) {
-        final List<OrderDto> orders = orderService.findAll();
+        final List<OrderDto> orders = orderService.findAll(1L);
         model.addAttribute("orders", orders);
         return "/orders/list";
     }
 
     @GetMapping(value = "/cart")
-    public String cart(ModelMap model) {
-        final OrderDto order = orderService.findCurrentOrder();
+    public String cart(ModelMap model, Authentication authentication) {
+        final String username = ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttribute("preferred_username");
+        final UserDto currentUser = userService.findByUsername(username);
+        final OrderDto order = orderService.findCurrentOrder(currentUser);
         model.addAttribute("order", order);
         return "/orders/cart";
     }
