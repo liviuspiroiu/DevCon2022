@@ -14,5 +14,32 @@ services:
       - '3306'
     volumes:
       - my-db:/var/lib/mysql
+
+  devcon-discovery:
+    image: devcon-discovery:0.0.1-SNAPSHOT
+    ports:
+      - '8761:8761'
+
+  devcon-api-gateway:
+    image: devcon-api-gateway:0.0.1-SNAPSHOT
+    depends_on:
+      - devcon-discovery
+    ports:
+      - '8762:8762'
+    environment:
+      EUREKA_URI: 'http://devcon-discovery-server:8761/eureka'
+
+  devcon-auth:
+    image: devcon-auth:0.0.1-SNAPSHOT
+    depends_on:
+      - db
+      - devcon-discovery
+    environment:
+      DB_URI: 'db'
+      EUREKA_URI: 'http://devcon-discovery-server:8761/eureka'
+    ports:
+      - '8083:8083'
+    expose:
+      - '8083'
 volumes:
   my-db:

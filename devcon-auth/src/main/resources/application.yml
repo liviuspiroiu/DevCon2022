@@ -5,7 +5,7 @@ spring:
   application:
     name: devcon-auth
   datasource:
-    url: jdbc:mysql://localhost/devcon_users
+    url: jdbc:mysql://${DB_URI:localhost}/devcon_users
     username: root
     password: password
     driver-class-name: com.mysql.jdbc.Driver

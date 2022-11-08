@@ -18,9 +18,13 @@
         <module name="devcon-orders" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
       <module name="devcon-api-gateway" options="-parameters" />
       <module name="devcon-auth" options="-parameters" />
       <module name="devcon-discovery" options="-parameters" />

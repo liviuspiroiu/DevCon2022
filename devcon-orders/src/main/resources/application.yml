@@ -5,7 +5,7 @@ spring:
   application:
     name: devcon-orders
   datasource:
-    url: jdbc:mysql://localhost/devcon
+    url: jdbc:mysql://${DB_URI:localhost}/devcon
     username: devcon
     password: password
     driver-class-name: com.mysql.jdbc.Driver
@@ -17,8 +17,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8083/auth/realms/devcon
-          jwk-set-uri: http://localhost:8083/auth/realms/devcon/protocol/openid-connect/certs
+          issuer-uri: http://${AUTH_URI:localhost}:8083/auth/realms/devcon
+          jwk-set-uri: http://${AUTH_URI:localhost}:8083/auth/realms/devcon/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:

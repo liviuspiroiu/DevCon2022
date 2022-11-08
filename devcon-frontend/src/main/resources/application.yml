@@ -30,7 +30,7 @@ spring:
             client-name: jwtClient
         provider:
           keycloak:
-            issuer-uri: http://localhost:8083/auth/realms/devcon
+            issuer-uri: http://${AUTH_URI:localhost}:8083/auth/realms/devcon
             user-name-attribute: preferred_username
 eureka:
   client:

@@ -1,5 +1,8 @@
 server:
   port: 8761
+spring:
+  application:
+    name: devcon-discovery
 eureka:
   client:
     registerWithEureka: false
