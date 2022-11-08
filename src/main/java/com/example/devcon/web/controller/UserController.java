@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") int id, @Valid User user, BindingResult result) {
+    public String updateUser(@PathVariable("id") long id, @Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             user.setId(id);
             return "/users/update";
