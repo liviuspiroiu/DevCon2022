@@ -1,6 +1,5 @@
 package com.example.devcon.users;
 
-import com.example.devcon.common.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

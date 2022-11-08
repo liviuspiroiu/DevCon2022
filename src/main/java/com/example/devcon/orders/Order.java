@@ -3,7 +3,7 @@ package com.example.devcon.orders;
 import com.example.devcon.payments.Payment;
 import com.example.devcon.common.domain.AbstractEntity;
 import com.example.devcon.common.domain.Address;
-import com.example.devcon.common.domain.User;
+import com.example.devcon.users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

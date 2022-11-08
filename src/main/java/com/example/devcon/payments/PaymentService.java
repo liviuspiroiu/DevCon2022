@@ -1,7 +1,7 @@
 package com.example.devcon.payments;
 
 import com.example.devcon.orders.Order;
-import com.example.devcon.common.domain.User;
+import com.example.devcon.users.User;
 import com.example.devcon.orders.OrderStatus;
 import com.example.devcon.orders.OrderRepository;
 import org.springframework.stereotype.Service;

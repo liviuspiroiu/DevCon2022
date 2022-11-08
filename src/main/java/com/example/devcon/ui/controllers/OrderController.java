@@ -1,6 +1,6 @@
 package com.example.devcon.ui.controllers;
 
-import com.example.devcon.common.domain.User;
+import com.example.devcon.users.User;
 import com.example.devcon.orders.OrderService;
 import com.example.devcon.payments.PaymentService;
 import com.example.devcon.common.dto.OrderDto;

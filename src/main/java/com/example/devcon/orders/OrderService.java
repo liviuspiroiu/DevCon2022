@@ -2,7 +2,7 @@ package com.example.devcon.orders;
 
 import com.example.devcon.products.ProductRepository;
 import com.example.devcon.common.domain.AbstractEntity;
-import com.example.devcon.common.domain.User;
+import com.example.devcon.users.User;
 import com.example.devcon.common.dto.OrderDto;
 import com.example.devcon.common.dto.OrderItemDto;
 import com.example.devcon.products.Product;

@@ -1,7 +1,7 @@
 package com.example.devcon.ui.controllers;
 
 import com.example.devcon.common.dto.ProductDto;
-import com.example.devcon.common.domain.User;
+import com.example.devcon.users.User;
 import com.example.devcon.products.CategoryService;
 import com.example.devcon.orders.OrderService;
 import com.example.devcon.products.ProductService;
