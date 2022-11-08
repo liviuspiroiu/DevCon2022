@@ -11,6 +11,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="devcon-auth" target="13" />
+      <module name="devcon-common" target="17" />
+      <module name="devcon-discovery" target="17" />
+      <module name="devcon-frontend" target="17" />
+      <module name="devcon-orders" target="17" />
+      <module name="devcon-payments" target="17" />
+      <module name="devcon-products" target="17" />
+      <module name="devcon-users" target="17" />
       <module name="DevCon2022" target="1.6" />
     </bytecodeTargetLevel>
   </component>

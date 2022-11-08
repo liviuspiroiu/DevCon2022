@@ -11,11 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "SYS_USERS")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private long id;
+public class User extends AbstractEntity implements UserDetails {
     @Column(name = "username")
     private String username;
 
@@ -43,14 +39,6 @@ public class User implements UserDetails {
 
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
