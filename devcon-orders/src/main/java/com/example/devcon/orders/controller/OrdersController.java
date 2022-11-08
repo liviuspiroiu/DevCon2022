@@ -38,4 +38,10 @@ public class OrdersController {
     public ResponseEntity<OrderDto> currentOrder(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(orderService.findCurrentOrder(userDto));
     }
+
+    @PostMapping("/findById/{id}")
+    public ResponseEntity<OrderDto> findById(@PathVariable long id) {
+        return ResponseEntity.ok(orderService.findById(id));
+    }
 }
+

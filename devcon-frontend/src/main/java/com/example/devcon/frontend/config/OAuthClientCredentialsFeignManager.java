@@ -14,8 +14,6 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import static java.util.Objects.isNull;
 
 public class OAuthClientCredentialsFeignManager {
-    public static final String CLIENT_REGISTRATION_ID = "keycloak";
-
     private static final Logger logger = LoggerFactory.getLogger(OAuthClientCredentialsFeignManager.class);
 
     public String getAccessToken() {

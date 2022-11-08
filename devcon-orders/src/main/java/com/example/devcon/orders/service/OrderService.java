@@ -164,4 +164,8 @@ public class OrderService {
         orderItemRepository.deleteById(id);
         orderRepository.save(order);
     }
+
+    public OrderDto findById(long id) {
+        return orderRepository.findById(id).orElseThrow().mapToDto();
+    }
 }

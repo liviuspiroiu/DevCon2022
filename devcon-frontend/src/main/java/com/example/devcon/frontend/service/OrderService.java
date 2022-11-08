@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Optional;
 
 @FeignClient(value = "order-feign-client", url = "http://127.0.0.1:8085/orders", configuration = OAuthFeignConfig.class)
 public interface OrderService {
@@ -26,4 +27,7 @@ public interface OrderService {
 
     @RequestMapping(method = RequestMethod.GET, value = "/delete/{id}")
     void deleteItem(@PathVariable("id") long id);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/findById/{id}")
+    Optional<OrderDto> findById(@PathVariable("id") long id);
 }
