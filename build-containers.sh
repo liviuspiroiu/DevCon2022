@@ -2,6 +2,8 @@
 cd devcon-auth || return
 ./mvnw clean install -DskipTests
 docker build -t docker.io/library/devcon-auth:0.0.1-SNAPSHOT .
+docker tag docker.io/library/devcon-auth:0.0.1-SNAPSHOT liviuns/devcon-auth:latest
+docker push liviuns/devcon-auth
 cd ..
 cd devcon-discovery || return
 ./mvnw spring-boot:build-image -DskipTests
